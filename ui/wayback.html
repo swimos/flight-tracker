@@ -1,0 +1,80 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Swim - Wayback Machine</title>
+    <meta name="description" content="">
+    <link rel="icon" type="image/png" href="assets/favicon_x128.png">
+
+    <!-- styles -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/fonts.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="assets/css/wayback.css" type="text/css">
+    
+    <!-- javascript -->
+    <script src="assets/js/lib/swim-core.js"></script>
+    <script src="assets/js/lib/swim-system.js"></script>
+    <script src="assets/js/lib/swim-mesh.js"></script>
+    <script src="assets/js/lib/swim-web.js"></script>
+    <script src="assets/js/lib/swim-ui.js"></script>
+    <script src="assets/js/lib/swim-ux.js"></script>
+    <script src="assets/js/layoutPlugin.js"></script>
+    <script src="assets/js/lib/default.js"></script>
+    <script src="assets/js/wayback.js"></script>
+    <script src="assets/js/index.js"></script>
+
+    <!-- mapbox -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.3.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css" rel="stylesheet"/>  
+
+    <script>
+        function start() {
+            window.page = new Wayback(`warp://${window.location.host}`, "templateRoot", "d237a4cc");
+            window.page.initialize();     
+            
+        }
+    </script>
+
+    <!-- body -->
+
+<body class="page" onload="start()">
+
+    <!-- header -->
+    <header class="main-header container-fluid">
+        <div class="row">
+            <div class="col col-8 content-left">
+                <picture><img src="https://cdn.swim.ai/images/logos/swim-marlin-logo-white.svg" alt="Swim.ai Logo" height="58">
+                </picture>
+                <div class="main-title">
+                    <h1>Wayback Control Panel</h1>
+                </div>
+            </div>
+            <div class="col col-4 text-right content-right">
+                <picture class="d-none d-sm-inline">
+                    <img src="http://cdn.swim.ai/images/powerBySWIM-AI-top-default.svg" height="33px"
+                        alt="Power by SWIM.ai Logo">
+                </picture>
+            </div>
+        </div>
+    </header>
+    <!-- /header -->
+
+    <!-- main -->
+    <main class="main" style="width: 100%">
+        <div id="templateRoot" style="width: 100%">
+
+        </div>
+       
+        <br>
+    </main>
+    <!-- /main -->
+
+</body>
+
+</html>

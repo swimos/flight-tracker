@@ -1,0 +1,59 @@
+.main {
+    overflow: visible;
+}
+.main-body {
+    overflow: hidden;
+}
+
+.main-center {
+    width: 800px;
+    margin: 10px auto;
+    background-color: rgba(200,200,200,0.1);
+    display: flex;
+    padding: 10px;
+    border-radius: 15px;    
+}
+
+input[type=button] {
+    
+}
+
+h4, h6{ 
+    background-color: rgba(12,17,18,0.5);
+    padding: 5px;
+    margin: 0px;
+}
+
+/* csv row container */
+#bae4d6a4 div {
+    background-color: rgba(200,200,200,0.1);
+    margin: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px;
+    line-height: 30px;
+}
+
+.simBarContainer {
+    height: 20px;
+    margin-top: 0px;
+}
+
+.simBarBg, .simBarFg {
+    border-radius: 0px;
+}
+
+.statsRow {
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.statsRow div{
+    flex-grow: 1;
+    line-height: 29px;
+}
+
+li {
+    text-align: left;
+}

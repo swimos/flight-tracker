@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Swim</title>
+  <meta name="description" content="">
+  <link rel="icon" type="image/png" href="assets/favicon_x128.png">
+
+  <!-- styles -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="assets/css/fonts.css" type="text/css">
+  <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+  <style>
+    #templateRoot {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <!-- javascript -->
+  <script src="assets/js/lib/swim-system.js"></script>
+  <script src="assets/js/lib/default.js"></script>
+  <script src="assets/js/layoutPlugin.js"></script>
+  <script src="assets/js/index.js"></script>
+
+  <!-- mapbox -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.0/mapbox-gl.css" rel="stylesheet" />
+  <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css" rel="stylesheet"/>  
+  
+  <script>
+    window.page = null;
+    
+    function start() {
+      window.page = new IndexPage(`warp://${window.location.host}`, "templateRoot", "d201e777");
+      window.page.initialize();        
+      // swim.HtmlView.fromNode(document.getElementById("templateRoot")).render("7a68ca92", () => {
+      //   console.info('page layout loaded');
+      // }, true);
+    }
+  </script>
+
+  <!-- body -->
+
+  <body class="page" onload="start()">
+
+    <!-- header -->
+    <header class="main-header container-fluid">
+      <div class="row">
+        <div class="col col-8 content-left">
+          <picture><img src="https://cdn.swim.ai/images/logos/swim-marlin-logo-white.svg" alt="Swim.ai Logo" height="58"></picture>
+          <div class="main-title">
+            <h1 id="mainTitle">Flight Tracker</h1>
+          </div>
+          <div class="menu">
+            <select id="regionDropDown">
+              <option value="chicago">Chicago O'Hare Airport</option>
+              <option value="sfbay">San Francisco Bay Area</option>
+              <option value="socal">Southern California</option>
+              <option value="seaboard">North East Seaboard, US</option>
+              <option value="dfw">Dallas/Fort Worth</option>
+              <option value="phoenix">Phoenix Sky Harbor</option>
+              <option value="seattle">Seattle/Vancouver</option>
+              <option value="persian">Persian Gulf</option>
+              <option value="europe">Europe</option>
+              <option value="zurich">Zürich Airport</option>
+              <option value="world">Worldwide</option>
+            </select>
+          </div>          
+        </div>
+        <div class="col col-4 text-right content-right">
+          <a href="http://swim.ai" target="_top">
+            <picture class="d-none d-sm-inline">
+              <img src="http://cdn.swim.ai/images/powerBySWIM-AI-top-default.svg" height="33px" alt="Power by SWIM.ai Logo">
+            </picture>
+          </a>
+        </div>
+      </div>
+    </header>
+    <!-- /header -->
+
+    <!-- main -->
+    <main class="main" style="height: 100%; width: 100%">
+
+      <div id="templateRoot" style="height: 100%; width: 100%">
+
+      </div>
+    </main>
+    <!-- /main -->
+
+  </body>
+
+</html>

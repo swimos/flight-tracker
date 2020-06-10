@@ -1,0 +1,52 @@
+simulator: @fabric {
+  @plane(class: "swim.simulator.SimulatorPlane")
+
+  @node {
+    pattern: "/bridge/airports"
+    @agent(class: "swim.simulator.agents.bridges.AirportsImportAgent")
+  }    
+
+  @node {
+    pattern: "/bridge/opensky"
+    @agent(class: "swim.simulator.agents.bridges.OpenSkyAgent")
+  }    
+
+  @node {
+    pattern: "/bridge/countries"
+    @agent(class: "swim.simulator.agents.bridges.CountriesImportAgent")
+  }    
+
+  @node {
+    pattern: "/simulator"
+    @agent(class: "swim.simulator.agents.SimulatorAgent")
+  }    
+
+  @node {
+    pattern: "/bridge/weather"
+    @agent(class: "swim.simulator.agents.bridges.WeatherDataAgent")
+  }    
+
+  @node {
+    pattern: "/apiRequestAgent/:id"
+    @agent(class: "swim.simulator.agents.ApiRequestAgent")
+  }    
+
+  @node {
+    pattern: "/layoutManager"
+    @agent(class: "swim.simulator.agents.ui.LayoutsManagerAgent")
+  }    
+
+  @node {
+    pattern: "/layout/:id"
+    @agent(class: "swim.simulator.agents.ui.LayoutAgent")
+  }    
+
+}
+
+@web(port: 9002) {
+  space: "simulator"
+  @websocket {
+    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+  }
+}
