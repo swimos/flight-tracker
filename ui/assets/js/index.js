@@ -1,68 +1,60 @@
 class IndexPage {
 
-    swimUrl = null;
-    rootHtmlElementId = null;
-    rootSwimTemplateId = null;
-    rootHtmlElement = null;
-    rootSwimElement = null;
-    canvas = null;
-    context = null;
-    overlay = null;
-    map = null;
-    aggregateNodeRef = null;
-    selectedMapPoint = null;
-    pie1Div = null;
-    pie2Div = null;
-    datagridDiv = null;
-    onGroundPie = null;
-    drawAirportTimeout = null;
-    uiFilters = {};
-    planeIcon = new Image();
-    airportIcon = new Image();
-    pieHighlightFilter = null;
-    currentSimTime = new Date(0);
-    appConfig = null;
-    userGuid = null;
-    mapBoundingBox = null;
-    links = {};
-    onGroundCount = 0;
-    inAirCount = 0;
-    altitudePieValues = {};
-    airplaneDataDirty = false;
-    weatherDirty = false;
-    airportsDirty = false;
-    onGroundPieDirty = false;
-    altitudePieDirty = false;
-    didMapMove = false;
-    displayedTimeDirty = false;
-    isNewTickRendered = true;
-    uiFilterDirty = false;
-    airportMarkers = {};
-    airplaneMarkers = {};
-    airportDataset = {};
-    airplaneDataset = {};
-    gairmetWeatherDataset = {};
-    gairmetWeatherPolys = [];
-    devicesDataset = {};
-    devicesMarkers = {};
-    trackDataset = {};
-    trackMarkers = {};
-    airplaneWorker = null;
-    fastTween = swim.Transition.duration(100);
-    currentZoomLevel = 0;
-    countriesList = {};
-    countryMarkers = {};
-    originCountryCounts = {};
-    zoomTransitionLevel = 4;
-    originCountryDataDirty = false;
-
     constructor(swimUrl, elementID, templateID) {
         console.info("[IndexPage]: constructor");
         this.swimUrl = swimUrl;
         this.rootHtmlElementId = elementID;
         this.rootSwimTemplateId = templateID;
-        this.planeIcon.src = "/assets/images/airplane-icon-blue.png";
-        this.airportIcon.src = "/assets/images/airport-icon.png";
+        this.overlay = null;
+        this.map = null;
+        this.aggregateNodeRef = null;
+        this.selectedMapPoint = null;
+        this.pie1Div = null;
+        this.pie2Div = null;
+        this.datagridDiv = null;
+        this.onGroundPie = null;
+        this.drawAirportTimeout = null;
+        this.uiFilters = {};
+        this.planeIcon = new Image();
+        this.airportIcon = new Image();
+        this.pieHighlightFilter = null;
+        this.currentSimTime = new Date(0);
+        this.appConfig = null;
+        this.userGuid = null;
+        this.mapBoundingBox = null;
+        this.links = {};
+        this.onGroundCount = 0;
+        this.inAirCount = 0;
+        this.altitudePieValues = {};
+        this.airplaneDataDirty = false;
+        this.weatherDirty = false;
+        this.airportsDirty = false;
+        this.onGroundPieDirty = false;
+        this.altitudePieDirty = false;
+        this.didMapMove = false;
+        this.displayedTimeDirty = false;
+        this.isNewTickRendered = true;
+        this.uiFilterDirty = false;
+        this.airportMarkers = {};
+        this.airplaneMarkers = {};
+        this.airportDataset = {};
+        this.airplaneDataset = {};
+        this.gairmetWeatherDataset = {};
+        this.gairmetWeatherPolys = [];
+        this.devicesDataset = {};
+        this.devicesMarkers = {};
+        this.trackDataset = {};
+        this.trackMarkers = {};
+        this.airplaneWorker = null;
+        this.fastTween = swim.Transition.duration(100);
+        this.currentZoomLevel = 0;
+        this.countriesList = {};
+        this.countryMarkers = {};
+        this.originCountryCounts = {};
+        this.zoomTransitionLevel = 4;
+        this.originCountryDataDirty = false;
+
+
         console.info("[IndexPage]: cookie", document.cookie, Utils.getCookie("swim.user.guid"))
         if(Utils.getCookie("swim.user.guid") === "") {
             this.userGuid = Utils.newGuid();
@@ -82,6 +74,9 @@ class IndexPage {
         this.rootSwimElement = swim.HtmlView.fromNode(this.rootHtmlElement);
         this.loadTemplate(this.rootSwimTemplateId, this.rootSwimElement, this.start.bind(this), false);
         this.aggregateNodeRef = swim.nodeRef(this.swimUrl, 'aggregation');
+        this.planeIcon.src = "/assets/images/airplane-icon-blue.png";
+        this.airportIcon.src = "/assets/images/airport-icon.png";
+
         this.links["airportListLink"] = swim.nodeRef(this.swimUrl, '/userPrefs/' + this.userGuid).downlinkMap().laneUri('filteredAirportList')
             // when an new item is added to the list, append it to listItems
             .didUpdate((key, newValue) => {
@@ -1251,16 +1246,6 @@ class IndexPage {
         }
     }
 
-    clearCanvas() {
-        // if (this.context) {
-        //     const canvasWidth = this.context.canvas.clientWidth;
-        //     const canvasHeight = this.context.canvas.clientHeight;
-        //     this.context.clearRect(0, 0, canvasWidth, canvasHeight);
-        //     this.canvas.width = 1;
-        //     this.canvas.width = canvasWidth;
-        // }
-    }
-
     handleResize() {
         this.map.map.resize();
         this.map.cascadeResize();        
@@ -1279,11 +1264,11 @@ class IndexPage {
         }, keepSynced);
     }
 
-    interpolate = (startValue, endValue, stepNumber, lastStepNumber) => {
+    interpolate(startValue, endValue, stepNumber, lastStepNumber) {
         return (endValue - startValue) * stepNumber / lastStepNumber + startValue;
     }
 
-    drawRotatedImage = (context, image, x, y, angle, scale = 5) => {
+    drawRotatedImage(context, image, x, y, angle, scale = 5) {
         const toRadians = Math.PI / 180;
         context.save();
         context.translate(x + scale, y + scale);
@@ -1292,7 +1277,7 @@ class IndexPage {
         context.restore();
     }
 
-    drawCountryNumber = (context, count, x, y, scale = 5) => {
+    drawCountryNumber(context, count, x, y, scale = 5) {
         const halfScale = scale/2;
         context.save();
         context.font = "20px Arial";
@@ -1413,7 +1398,7 @@ class IndexPage {
     // <option value="persian">Persian Gulf</option>
     // <option value="europe">Europe</option>
 
-    checkBounds = (currTrackPoint, boundingBox) => {
+    checkBounds(currTrackPoint, boundingBox) {
         let currLong = currTrackPoint.get("lng").numberValue();
         let currLat = currTrackPoint.get("lat").numberValue();
         let inBounds = true;

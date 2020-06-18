@@ -1,14 +1,5 @@
 class Wayback {
 
-    swimUrl = null;
-    rootHtmlElementId = null;
-    rootSwimTemplateId = null;
-    rootHtmlElement = null;
-    rootSwimElement = null;
-    apiNodeRef = null;
-    simNodeRef = null;
-
-
     constructor(swimUrl, elementId, templateId) {
         console.info("[Wayback]: constructor");
         this.swimUrl = swimUrl;
@@ -17,7 +8,9 @@ class Wayback {
         this.rootSwimTemplateId = templateId;
         this.apiNodeRef = swim.nodeRef(`ws://${window.location.hostname}:9002`, '/bridge/opensky');
         this.simNodeRef = swim.nodeRef(`ws://${window.location.hostname}:9002`, '/simulator');
-
+        this.rootHtmlElement = null;
+        this.rootSwimElement = null;
+    
         this.appConfig = null;
         this.links = [];
         this.logEntries = [];

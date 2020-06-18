@@ -2,11 +2,13 @@ importScripts('/assets/js/lib/swim-system.js');
 
 class AirplaneWorker {
     
-    swimUrl = null;
+    constructor() {
+        this.swimUrl = null;
 
-    bufferTimeoutTime = 10;
-    bufferTimeout = null;
-    msgBuffer = [];
+        this.bufferTimeoutTime = 10;
+        this.bufferTimeout = null;
+        this.msgBuffer = [];
+    }
 
     start() {
         console.info('[Worker]:start');
