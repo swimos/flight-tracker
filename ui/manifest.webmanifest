@@ -1,0 +1,28 @@
+{
+    "short_name": "Swim Flight Tracker",
+    "name": "Swim Flight Tracker",
+    "description": "Swim Flight Tracker",
+    "icons": [
+      {
+        "src": "/assets/swim-icon-192px.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/assets/swim-icon-512px.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/index.html",
+    "background_color": "#1a1a1a",
+    "display": "minimal-ui",
+    "scope": "/",
+    "theme_color": "#1a1a1a",
+    "serviceworker": {
+      "src": "/sw.js",
+      "scope": "/",
+      "type": "",
+      "update_via_cache": "none"
+    }
+  }

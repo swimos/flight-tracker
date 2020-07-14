@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="manifest" href="/manifest.webmanifest">
 
   <title>Swim</title>
   <meta name="description" content="">
@@ -34,7 +35,19 @@
   
   <script>
     window.page = null;
-    
+
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				navigator.serviceWorker.register('/sw.js').then(function(registration) {
+				// Registration was successful
+				console.log('ServiceWorker registration successful with scope: ', registration.scope);
+				}, function(err) {
+				// registration failed :(
+				console.log('ServiceWorker registration failed: ', err);
+				});
+			});
+		}
+        
     function start() {
       window.page = new IndexPage(`warp://${window.location.host}`, "templateRoot", "d201e777");
       window.page.initialize();        
