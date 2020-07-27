@@ -17,7 +17,8 @@ import swim.simulator.configUtil.ConfigEnv;
 public class CountriesImportAgent extends DataImportAgent {
 
 
-    private Value config = ConfigEnv.config;
+    private Value appConfig = ConfigEnv.config;
+    private Value agentConfig;
 
     @SwimLane("syncApp")
     public CommandLane<Value> syncAppCommand = this.<Value>commandLane()
@@ -31,9 +32,10 @@ public class CountriesImportAgent extends DataImportAgent {
     @Override
     public void didStart() {
         super.didStart();
+        final Value agentConfig = getProp("config");
         String logMsg = "Countries Import Agent: Agent started";
         command(Uri.parse("ws://127.0.0.1:9002"), Uri.parse("/simulator"), Uri.parse("addJavaLog"), Value.fromObject(logMsg));
-        this.initialize(config, "countries");
+        this.initialize(agentConfig, appConfig, "countries");
     }    
 
     /**

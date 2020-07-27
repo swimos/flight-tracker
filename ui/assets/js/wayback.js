@@ -14,6 +14,8 @@ class Wayback {
         this.appConfig = null;
         this.links = [];
         this.logEntries = [];
+
+        this.csvFiles = [];
         
     }
 
@@ -22,17 +24,33 @@ class Wayback {
         this.rootHtmlElement = document.getElementById(this.rootHtmlElementId);
         this.rootSwimElement = swim.HtmlView.fromNode(this.rootHtmlElement);
 
-        this.links["appConfigLink"] = swim.nodeRef(this.swimUrl, 'config').downlinkValue().laneUri('appConfig')
-            .didSet((newValue) => {
-                if (newValue !== swim.Value.absent()) {
-                    this.appConfig = newValue.toObject();
-                    // document.getElementById("mainTitle").innerText = this.appConfig.appName;
-                    // document.title = "Swim - " + this.appConfig.appName;
-                    console.info("[Wayback] app config updated", this.appConfig);
-                    swim.command(this.swimUrl, "/userPrefs/" + this.userGuid, "setGuid", this.userGuid);
-                }
+
+        this.links["csvListLink"] = swim.nodeRef(this.simUrl, '/simulator').downlinkMap().laneUri('csvFiles')
+            .didUpdate((key, newValue, oldValue) => {
+                console.info("csvListLink", key, newValue, oldValue);
+                this.csvFiles[key.stringValue()] = newValue;
+                // if (newValue !== swim.Value.absent()) {
+                //     this.appConfig = newValue.toObject();
+                //     // document.getElementById("mainTitle").innerText = this.appConfig.appName;
+                //     // document.title = "Swim - " + this.appConfig.appName;
+                //     console.info("[Wayback] app config updated", this.appConfig);
+                //     swim.command(this.swimUrl, "/userPrefs/" + this.userGuid, "setGuid", this.userGuid);
+                // }
                 this.renderCsvList();
             });
+            
+            
+        // this.links["appConfigLink"] = swim.nodeRef(this.swimUrl, 'config').downlinkValue().laneUri('appConfig')
+        //     .didSet((newValue) => {
+        //         if (newValue !== swim.Value.absent()) {
+        //             this.appConfig = newValue.toObject();
+        //             // document.getElementById("mainTitle").innerText = this.appConfig.appName;
+        //             // document.title = "Swim - " + this.appConfig.appName;
+        //             console.info("[Wayback] app config updated", this.appConfig);
+        //             swim.command(this.swimUrl, "/userPrefs/" + this.userGuid, "setGuid", this.userGuid);
+        //         }
+        //         this.renderCsvList();
+        //     });
 
         this.links["simTimeLink"] = swim.nodeRef(this.swimUrl, 'aggregation').downlinkValue().laneUri('currentSimTime')
             .didSet((key, newValue) => {
@@ -118,11 +136,11 @@ class Wayback {
     }    
 
     renderCsvList() {
-        const csvList = this.appConfig.csvFiles;
+        const csvList = this.csvFiles;
         const listContainer = this.rootSwimElement.getCachedElement("bae4d6a4");
         listContainer.node.innerHTML = "<h4> CSV Files List</h4>";
         for(const csvType in csvList) {
-            const currCsvInfo = csvList[csvType];
+            const currCsvInfo = csvList[csvType].toObject();
             const currRow = swim.HtmlView.create("div");
             this.links[csvType] = swim.nodeRef(this.simUrl, currCsvInfo.laneUri).downlinkValue().laneUri('csvFileInfo')
             .didSet((newValue) => {

@@ -17,13 +17,8 @@ import swim.simulator.configUtil.ConfigEnv;
 public class AirportsImportAgent extends DataImportAgent {
 
 
-    private Value config = ConfigEnv.config;
-
-    @SwimLane("syncApp")
-    public CommandLane<Value> syncAppCommand = this.<Value>commandLane()
-        .onCommand((Value newVectorRecord) -> {
-            this.processCsvData();
-        });      
+    private Value appConfig = ConfigEnv.config;
+    private Value agentConfig;
 
     /**
     * Standard startup method called automatically when WebAgent is created
@@ -31,10 +26,17 @@ public class AirportsImportAgent extends DataImportAgent {
     @Override
     public void didStart() {
         super.didStart();
+        final Value agentConfig = getProp("config");
+        this.initialize(agentConfig, appConfig, "airports");
         String logMsg = "Airport Import Agent: Agent started";
         command(Uri.parse("warp://127.0.0.1:9002"), Uri.parse("/simulator"), Uri.parse("addJavaLog"), Value.fromObject(logMsg));
-        this.initialize(config, "airports");
-    }    
+    }  
+
+    @SwimLane("syncApp")
+    public CommandLane<Value> syncAppCommand = this.<Value>commandLane()
+        .onCommand((Value newVectorRecord) -> {
+            this.processCsvData();
+        });      
 
     /**
      * read and parse csv file

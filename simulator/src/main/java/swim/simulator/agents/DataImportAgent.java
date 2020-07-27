@@ -67,20 +67,19 @@ public class DataImportAgent extends AbstractAgent {
         // this.startupTime.set(System.currentTimeMillis());
     }   
 
-    public void initialize(Value csvConfig, String csvFileName) {
-        this.fileConfig = csvConfig.get("csvFiles").get(csvFileName);
-        // System.out.println(this.fileConfig);
+    public void initialize(Value agentConfig, Value csvConfig, String csvFileName) {
         this.sourceDirectory = csvConfig.get("csvInFolder").stringValue();
         this.targetDirectory = csvConfig.get("csvOutFolder").stringValue();
-        this.sourceDataFile = this.fileConfig.get("fileIn").stringValue();
-        this.targetDataFile = this.fileConfig.get("fileOut").stringValue();
+        this.sourceDataFile = agentConfig.get("fileIn").stringValue();
+        this.targetDataFile = agentConfig.get("fileOut").stringValue();
         this.absolutePathIn = this.sourceDirectory + this.sourceDataFile;
         this.absolutePathOut = this.targetDirectory + this.targetDataFile;
-        this.columnNames = this.fileConfig.get("columns").stringValue().split(String.valueOf(this.delimiter));
-        if(this.fileConfig.get("enabled").booleanValue() == true) {
+        this.columnNames = agentConfig.get("columns").stringValue().split(String.valueOf(this.delimiter));
+        if(agentConfig.get("enabled").booleanValue() == true) {
             if(this.bufferFileContents()) {
                 this.readCsvFile();
                 System.out.println(this.absolutePathIn + " config ready");
+                command(Uri.parse("warp://127.0.0.1:9002"), Uri.parse("/simulator"), Uri.parse("addCsvFile"), agentConfig);
             }        
             
         }

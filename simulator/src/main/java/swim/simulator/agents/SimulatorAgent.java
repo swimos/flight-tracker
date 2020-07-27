@@ -34,6 +34,15 @@ public class SimulatorAgent extends AbstractAgent {
     @SwimLane("stateVectorKeys")
     MapLane<Integer, Long> stateVectorKeys;
 
+    @SwimLane("csvFiles")
+    MapLane<String, Value> csvFiles;
+
+    @SwimLane("addCsvFile")
+    public CommandLane<Value> addCsvFileCommand = this.<Value>commandLane()
+        .onCommand((Value fileInfo) -> {
+            this.csvFiles.put(fileInfo.get("type").stringValue(), fileInfo);            
+        });
+
     @SwimLane("addVectorKey")
     public CommandLane<Value> addVectorKey = this.<Value>commandLane()
         .onCommand((Value newVectorKey) -> {

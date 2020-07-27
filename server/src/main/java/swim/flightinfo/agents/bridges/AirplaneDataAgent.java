@@ -19,9 +19,9 @@ import java.util.Date;
 
 public class AirplaneDataAgent extends AbstractAgent {
 
-  private String rootApiUrl = "https://scottswim:s2nd13g0@opensky-network.org/api";
-  private String arrivalsUrl = rootApiUrl + "/flights/arrival?airport=";//EDDF&begin=1573162661&end=1573162661"; 
-  private String departuresUrl = rootApiUrl + "/flights/departure?airport=";//EDDF&begin=1573162661&end=1573162661"; 
+  private String rootApiUrl;
+  private String arrivalsUrl;
+  private String departuresUrl;
 
   private Double currentCenterLat = 41.979246;
   private Double currentCenterLong = -87.906914;
@@ -37,6 +37,22 @@ public class AirplaneDataAgent extends AbstractAgent {
   private Double longOffset = (currentCenterLong - targetCenterLong);
 
   private static final int HISTORY_SIZE = 500;
+
+  /**
+   * Standard startup method called automatically when WebAgent is created
+   */
+  @Override
+  public void didStart() {
+    // System.out.println("AirplaneDataAgent: Agent started");
+    this.startupTime.set(System.currentTimeMillis());
+    Value agentConfig = getProp("config");
+    this.rootApiUrl = agentConfig.get("apiUrl").stringValue();
+    this.arrivalsUrl = rootApiUrl + "/flights/arrival?airport=";//EDDF&begin=1573162661&end=1573162661"; 
+    this.departuresUrl = rootApiUrl + "/flights/departure?airport=";//EDDF&begin=1573162661&end=1573162661"; 
+
+  }
+
+
 
   @SwimLane("startupTime")
   ValueLane<Long> startupTime = this.<Long>valueLane();
@@ -60,15 +76,6 @@ public class AirplaneDataAgent extends AbstractAgent {
         this.startProcessVectorTimer();
         // this.processStateVectors(newVectorRecord);
       });       
-
-  /**
-   * Standard startup method called automatically when WebAgent is created
-   */
-  @Override
-  public void didStart() {
-    // System.out.println("AirplaneDataAgent: Agent started");
-    this.startupTime.set(System.currentTimeMillis());
-  }
 
   /**
     Method which creates the data purge timer

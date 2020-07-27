@@ -24,36 +24,36 @@ import swim.uri.Uri;
  */
 public class ApplicationPlane extends AbstractPlane {
 
-  @SwimRoute("/aggregation")
-  AgentRoute<AggregationAgent> aggregationAgent;
+  // @SwimRoute("/aggregation")
+  // AgentRoute<AggregationAgent> aggregationAgent;
 
-  @SwimRoute("/airplanes/:callsign")
-  AgentRoute<AirplaneAgent> airplaneAgent;
+  // @SwimRoute("/airplanes/:callsign")
+  // AgentRoute<AirplaneAgent> airplaneAgent;
 
-  @SwimRoute("/airport/:id")
-  AgentRoute<AirportAgent> airportAgent;
+  // @SwimRoute("/airport/:id")
+  // AgentRoute<AirportAgent> airportAgent;
 
-  @SwimRoute("/bridge/airplaneData")
-  AgentRoute<AirplaneDataAgent> airplaneDataAgent;
+  // @SwimRoute("/bridge/airplaneData")
+  // AgentRoute<AirplaneDataAgent> airplaneDataAgent;
 
-  @SwimRoute("/config")
-  AgentRoute<ConfigAgent> configAgent;
+  // @SwimRoute("/config")
+  // AgentRoute<ConfigAgent> configAgent;
 
-  @SwimRoute("/userPrefs/:userGuid")
-  AgentRoute<UserPrefsAgent> userPrefsAgent;
+  // @SwimRoute("/userPrefs/:userGuid")
+  // AgentRoute<UserPrefsAgent> userPrefsAgent;
 
-  /**
-   * The LayoutManager Agent manages the list of available layout templates,
-   * loads existing templates on startup and the add/remove of templates
-   */
-  @SwimRoute("/layoutManager")
-  AgentRoute<LayoutsManagerAgent> layoutManager;
+  // /**
+  //  * The LayoutManager Agent manages the list of available layout templates,
+  //  * loads existing templates on startup and the add/remove of templates
+  //  */
+  // @SwimRoute("/layoutManager")
+  // AgentRoute<LayoutsManagerAgent> layoutManager;
 
-  /**
-   * The Layout Agent hold the data for an individual layout template
-   */
-  @SwimRoute("/layout/:id")
-  AgentRoute<LayoutAgent> layoutAgent;
+  // /**
+  //  * The Layout Agent hold the data for an individual layout template
+  //  */
+  // @SwimRoute("/layout/:id")
+  // AgentRoute<LayoutAgent> layoutAgent;
 
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();

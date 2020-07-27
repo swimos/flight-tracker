@@ -31,13 +31,37 @@ import swim.simulator.configUtil.ConfigEnv;
  */
 public class WeatherDataAgent extends DataImportAgent {
 
-    private Value config = ConfigEnv.config;
-    private Value csvConfig = config.get("csvFiles").get("weather");
-    private boolean apiQueryEnabled = csvConfig.get("apiQueryAutoStart").booleanValue(false);
-    private Integer apiQueryInterval = csvConfig.get("apiQueryInterval").intValue();
-    private String rootApiUrl = csvConfig.get("apiUrl").stringValue("");
-    private String gairmetDataUrl = rootApiUrl + csvConfig.get("apiQueryParams").stringValue("");
+    private Value appConfig = ConfigEnv.config;
+    private Value agentConfig;
+
+    private boolean apiQueryEnabled;
+    private Integer apiQueryInterval;
+    private String rootApiUrl;
+    private String gairmetDataUrl;
     private TimerRef refreshTimer;
+
+    /**
+    * Standard startup method called automatically when WebAgent is created
+    */
+    @Override
+    public void didStart() {
+        super.didStart();
+        final Value agentConfig = getProp("config");
+
+        this.apiQueryEnabled = agentConfig.get("apiQueryAutoStart").booleanValue(false);
+        this.apiQueryInterval = agentConfig.get("apiQueryInterval").intValue();
+        this.rootApiUrl = agentConfig.get("apiUrl").stringValue("");
+        this.gairmetDataUrl = rootApiUrl + agentConfig.get("apiQueryParams").stringValue("");
+
+        command(Uri.parse("/simulator"), Uri.parse("addJavaLog"), Value.fromObject("Weather Data Agent: Agent started"));
+        // this.startupTime.set(System.currentTimeMillis());
+        // readAirportDataFile();
+        this.initialize(agentConfig, appConfig, "weather");
+        if(this.apiQueryEnabled) {
+            this.requestWeatherData();
+        }
+
+    }    
 
     @SwimLane("rawData")
     MapLane<String, String> rawData;
@@ -66,22 +90,6 @@ public class WeatherDataAgent extends DataImportAgent {
             }
         });         
       
-    /**
-    * Standard startup method called automatically when WebAgent is created
-    */
-    @Override
-    public void didStart() {
-        super.didStart();
-        command(Uri.parse("/simulator"), Uri.parse("addJavaLog"), Value.fromObject("Weather Data Agent: Agent started"));
-        // this.startupTime.set(System.currentTimeMillis());
-        // readAirportDataFile();
-        this.initialize(config, "weather");
-        if(this.apiQueryEnabled) {
-            this.requestWeatherData();
-        }
-
-    }    
-
     private void startRefreshTimer() {
         if(this.apiQueryEnabled) {
             refreshTimer = setTimer(this.apiQueryInterval, this::requestWeatherData);

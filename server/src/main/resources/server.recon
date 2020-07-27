@@ -1,5 +1,52 @@
 flightInfo: @fabric {
   @plane(class: "swim.flightinfo.ApplicationPlane")
+
+  @node {
+    pattern: "/aggregation"
+    @agent(class: "swim.flightinfo.agents.AggregationAgent")
+  }    
+
+  @node {
+    pattern: "/airplanes/:callsign"
+    @agent(class: "swim.flightinfo.agents.AirplaneAgent")
+  }    
+
+  @node {
+    pattern: "/airport/:id"
+    @agent(class: "swim.flightinfo.agents.AirportAgent")
+  }    
+
+  @node {
+    pattern: "/bridge/airplaneData"
+    @agent(class: "swim.flightinfo.agents.bridges.AirplaneDataAgent") {
+      config: {
+        apiUrl: "https://<api_username>:<api_password>@opensky-network.org/api"
+      }
+    }
+  } 
+
+  @node {
+    pattern: "/config"
+    @agent(class: "swim.flightinfo.configUtil.ConfigAgent")
+  }    
+
+  @node {
+    pattern: "/userPrefs/:userGuid"
+    @agent(class: "swim.flightinfo.agents.ui.UserPrefsAgent")
+  }    
+
+  @node {
+    pattern: "/layoutManager"
+    @agent(class: "swim.flightinfo.agents.ui.LayoutsManagerAgent")
+  }    
+
+  @node {
+    pattern: "/layout/:id"
+    @agent(class: "swim.flightinfo.agents.ui.LayoutAgent")
+  }  
+
+
+     
 }
 
 @web(port: 9001) {

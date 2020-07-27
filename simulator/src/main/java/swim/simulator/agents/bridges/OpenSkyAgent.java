@@ -32,39 +32,37 @@ import swim.simulator.configUtil.ConfigEnv;
 
 public class OpenSkyAgent extends DataImportAgent {
 
-  private Value config = ConfigEnv.config;
-  private Value csvConfig = config.get("csvFiles").get("airplanes");
-  private Double currentCenterLat = config.get("map").get("queryCenterPoint").getItem(0).doubleValue(0.0);
-  private Double currentCenterLong = config.get("map").get("queryCenterPoint").getItem(1).doubleValue(0.0);
+  private Value appConfig = ConfigEnv.config;
+  private Value agentConfig;
 
-  private Double targetCenterLat = config.get("map").get("uiCenterPoint").getItem(0).doubleValue(0.0);
-  private Double targetCenterLong = config.get("map").get("uiCenterPoint").getItem(1).doubleValue(0.0);
+  private Value csvConfig;
+  private Double currentCenterLat;
+  private Double currentCenterLong;
+
+  private Double targetCenterLat;
+  private Double targetCenterLong;
   
   // private Double targetCenterLat = 35.260898;
   // private Double targetCenterLong = -116.687073;
 
-  private Double latOffset  = (currentCenterLat - targetCenterLat);
-  private Double longOffset = (currentCenterLong - targetCenterLong);
+  private Double latOffset;
+  private Double longOffset;
 
-  private Double queryBoundsOffset = csvConfig.get("queryBounds").doubleValue(0.0);
+  private Double queryBoundsOffset;
 
-  private Double boundsLatMin = currentCenterLat - queryBoundsOffset;
-  private Double BoundsLongMin = currentCenterLong - (queryBoundsOffset * 1.5);
-  private Double boundsLatMax = currentCenterLat + queryBoundsOffset;
-  private Double BoundsLongMax = currentCenterLong + (queryBoundsOffset * 1.5);
+  private Double boundsLatMin;
+  private Double BoundsLongMin;
+  private Double boundsLatMax;
+  private Double BoundsLongMax;
 
-  private String rootApiUrl = csvConfig.get("apiUrl").stringValue("");
-  // private String airplaneStatesUrl = rootApiUrl + "/states/all?lamin=45.8389&lomin=5.9962&lamax=47.8229&lomax=10.5226"; // zurich
-  // private String airplaneStatesUrl = rootApiUrl + "/states/all?lamin=36.9951&lomin=-82.3425&lamax=46.3261&lomax=-64.2587"; // eastern US
-  // private String airplaneStatesUrl = rootApiUrl + "/states/all?lamin=" + boundsLatMin.toString() + "&lomin=" + BoundsLongMin.toString() + "&lamax=" + boundsLatMax.toString() + "&lomax=" + BoundsLongMax.toString(); // chicago area
-  // private String airplaneStatesUrl = rootApiUrl + "/states/all"; // worldwide
-  private String airplaneStatesUrl = rootApiUrl + String.format(csvConfig.get("apiQueryParams").stringValue(""), boundsLatMin.toString(), BoundsLongMin.toString(), boundsLatMax.toString(), BoundsLongMax.toString());
-  private String worldQueryUrl = rootApiUrl + csvConfig.get("worldQueryParam").stringValue();
-  private String arrivalsUrl = rootApiUrl + "/flights/arrival?airport=";//EDDF&begin=1573162661&end=1573162661"; 
-  private String departuresUrl = rootApiUrl + "/flights/departure?airport=";//EDDF&begin=1573162661&end=1573162661"; 
+  private String rootApiUrl;
+  private String airplaneStatesUrl;
+  private String worldQueryUrl;
+  private String arrivalsUrl;
+  private String departuresUrl;
 
-  private boolean apiQueryEnabled = csvConfig.get("apiQueryAutoStart").booleanValue(false);
-  private Integer apiQueryInterval = csvConfig.get("apiQueryInterval").intValue();
+  private boolean apiQueryEnabled;
+  private Integer apiQueryInterval;
   private TimerRef refreshTimer;
   
   private final int HISTORY_SIZE = 500;
@@ -323,6 +321,42 @@ public class OpenSkyAgent extends DataImportAgent {
   public void didStart() {
     command(Uri.parse("/simulator"), Uri.parse("addJavaLog"), Value.fromObject("OpenSky Agent: Agent started"));
     super.didStart();
+    this.agentConfig = getProp("config");
+    command(Uri.parse("warp://127.0.0.1:9002"), Uri.parse("/simulator"), Uri.parse("addCsvFile"), agentConfig);
+    
+    this.currentCenterLat = appConfig.get("map").get("queryCenterPoint").getItem(0).doubleValue(0.0);
+    this.currentCenterLong = appConfig.get("map").get("queryCenterPoint").getItem(1).doubleValue(0.0);
+
+    this.targetCenterLat = appConfig.get("map").get("uiCenterPoint").getItem(0).doubleValue(0.0);
+    this.targetCenterLong = appConfig.get("map").get("uiCenterPoint").getItem(1).doubleValue(0.0);
+    
+    // targetCenterLat = 35.260898;
+    // targetCenterLong = -116.687073;
+
+    this.latOffset  = (currentCenterLat - targetCenterLat);
+    this.longOffset = (currentCenterLong - targetCenterLong);
+
+    this.queryBoundsOffset = this.agentConfig.get("queryBounds").doubleValue(0.0);
+
+    this.boundsLatMin = currentCenterLat - queryBoundsOffset;
+    this.BoundsLongMin = currentCenterLong - (queryBoundsOffset * 1.5);
+    this.boundsLatMax = currentCenterLat + queryBoundsOffset;
+    this.BoundsLongMax = currentCenterLong + (queryBoundsOffset * 1.5);
+
+    this.rootApiUrl = this.agentConfig.get("apiUrl").stringValue("");
+    // airplaneStatesUrl = rootApiUrl + "/states/all?lamin=45.8389&lomin=5.9962&lamax=47.8229&lomax=10.5226"; // zurich
+    // airplaneStatesUrl = rootApiUrl + "/states/all?lamin=36.9951&lomin=-82.3425&lamax=46.3261&lomax=-64.2587"; // eastern US
+    // airplaneStatesUrl = rootApiUrl + "/states/all?lamin=" + boundsLatMin.toString() + "&lomin=" + BoundsLongMin.toString() + "&lamax=" + boundsLatMax.toString() + "&lomax=" + BoundsLongMax.toString(); // chicago area
+    // airplaneStatesUrl = rootApiUrl + "/states/all"; // worldwide
+    this.airplaneStatesUrl = rootApiUrl + String.format(this.agentConfig.get("apiQueryParams").stringValue(""), boundsLatMin.toString(), BoundsLongMin.toString(), boundsLatMax.toString(), BoundsLongMax.toString());
+    this.worldQueryUrl = rootApiUrl + this.agentConfig.get("worldQueryParam").stringValue();
+    this.arrivalsUrl = rootApiUrl + "/flights/arrival?airport=";//EDDF&begin=1573162661&end=1573162661"; 
+    this.departuresUrl = rootApiUrl + "/flights/departure?airport=";//EDDF&begin=1573162661&end=1573162661"; 
+
+    this.apiQueryEnabled = this.agentConfig.get("apiQueryAutoStart").booleanValue(false);
+    this.apiQueryInterval = this.agentConfig.get("apiQueryInterval").intValue();
+
+
     this.startupTime.set(System.currentTimeMillis());
     this.rawStateCount.set(0);
     this.importedStateCount.set(0);
@@ -330,7 +364,7 @@ public class OpenSkyAgent extends DataImportAgent {
     this.refreshTotal.set(0l);
     this.apiRequestTotal.set(0l);
     this.recordProcessingTotal.set(0l);
-    if(csvConfig.get("preloadFromCsv").booleanValue() == true) {
+    if(this.agentConfig.get("preloadFromCsv").booleanValue() == true) {
       this.readStatesFromFile();
     }
     if(this.apiQueryEnabled) {
@@ -352,7 +386,7 @@ public class OpenSkyAgent extends DataImportAgent {
       return;
     }
     String queryUrl = this.airplaneStatesUrl;
-    if(csvConfig.get("queryWorld").booleanValue() == true) {
+    if(this.agentConfig.get("queryWorld").booleanValue() == true) {
       queryUrl = this.worldQueryUrl;
     }
     // System.out.println("OpenSky Agent: start requestStateVectors from " + queryUrl);
@@ -486,7 +520,7 @@ public class OpenSkyAgent extends DataImportAgent {
         System.out.println("error reading file");
     }    
 
-    if(config.get("autoStartSim").booleanValue() == true) {
+    if(appConfig.get("autoStartSim").booleanValue() == true) {
       command(Uri.parse("/simulator"), Uri.parse("startSim"), Value.absent());
     }
     command(Uri.parse("/simulator"), Uri.parse("updateTickCount"), Value.absent());
