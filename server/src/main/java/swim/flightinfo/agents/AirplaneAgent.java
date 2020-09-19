@@ -62,6 +62,12 @@ public class AirplaneAgent extends AbstractAgent {
   @SwimLane("tracks")
   protected MapLane<Long, Record> tracks;
 
+  @SwimLane("bearingHistory")
+  protected MapLane<Long, Value> bearingHistory;
+
+  @SwimLane("bearingTotal")
+  protected ValueLane<Float> bearingTotal = this.<Float>valueLane();
+
   /**
     Command Lane used to update the state data for current Airplane State Vector
    */
@@ -84,17 +90,35 @@ public class AirplaneAgent extends AbstractAgent {
           this.callsign.set(stateData.get("callsign").stringValue("DEADBEEF")); // store call sign on Value Lane
           this.latitude.set(stateData.get("latitude"));
           this.longitude.set(stateData.get("longitude"));
+          this.bearingHistory.put(timestamp, stateData.get("heading"));
 
           Record currentTrackPoint = Record.create(2)
               .slot("lat", this.latitude.get().floatValue(0f))
               .slot("lng", this.longitude.get().floatValue(0f));
 
+          this.totalBearingHistory();
           this.tracks.put(timestamp, currentTrackPoint);
           this.isActive = true;
+
+          Record tempRecord = Record.create()
+            .slot("callsign", this.callsign.get())
+            .slot("longitude", this.longitude.get())
+            .slot("latitude", this.latitude.get())
+            .slot("onGround", stateData.get("onGround"))
+            .slot("bearingTotal", this.bearingTotal.get())
+            .slot("icao24", stateData.get("icao24").stringValue())
+            .slot("geoAltitude", stateData.get("geoAltitude"))
+            .slot("baroAltitude", stateData.get("baroAltitude"))
+            .slot("velocity", stateData.get("velocity"))
+            .slot("heading", stateData.get("heading"))
+            .slot("originCountry", stateData.get("originCountry"))
+            .slot("verticalRate", stateData.get("verticalRate"));
+          
           // update Aggregation WebAgent with current data
-          command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("aggregation"), Uri.parse("addAirplane"), stateData); 
+          command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("aggregation"), Uri.parse("addAirplane"), tempRecord); 
 
         }
+        
         this.lastUpdate.set(timestamp); // update lastUpdate Value Lane
         this.setPurgeTimer(); // make call to create data purge timer
       });  
@@ -172,6 +196,38 @@ public class AirplaneAgent extends AbstractAgent {
       this.tracks.remove(currKey);
     }        
 
+  }
+
+  private void totalBearingHistory() {
+    Cursor<Long> recordCursor = this.bearingHistory.keyIterator();
+    Float previousBearing = -1f;
+    Float deltaTotal = 0f;
+    while (recordCursor.hasNext()) {
+      Long currKey = recordCursor.next();
+      Float currentBearing = this.bearingHistory.get(currKey).floatValue();
+      if(previousBearing == -1f) {
+        previousBearing = currentBearing;
+      } else {
+        int floatCompare = Float.compare(currentBearing, previousBearing);
+        float newDelta = 0f;
+        if(floatCompare > 0) {
+          newDelta = currentBearing - previousBearing;
+          if(newDelta < 180f && newDelta > -180f) {
+            deltaTotal = deltaTotal + newDelta;
+          }
+        } else if(floatCompare < 0){
+          newDelta = previousBearing - currentBearing;
+          if(newDelta < 180f && newDelta > -180f) {
+            deltaTotal = deltaTotal - newDelta;
+          }
+
+        }
+        previousBearing = currentBearing;
+      }
+      
+    }       
+    
+    this.bearingTotal.set(deltaTotal);
   }
 
   private void setEventHubTimer() {

@@ -914,6 +914,10 @@ class IndexPage {
                                 markerFillColor = swim.Color.rgb(255, 0, 0, 0.5);
                                 markerStrokeColor = swim.Color.rgb(255, 0, 0, 0.75);
                             }
+                            if(newValue.get("bearingTotal").numberValue() >= 720 || newValue.get("bearingTotal").numberValue() <= -720) {
+                                markerFillColor = swim.Color.rgb(255, 0, 0, 0.5);
+                                markerStrokeColor = swim.Color.rgb(255, 0, 0, 0.75);
+                            }
 
                             // update marker color/stroke
                             tempMarker.stroke(markerStrokeColor, this.fastTween);
@@ -1133,6 +1137,7 @@ class IndexPage {
                     this.drawTracks();
                 })
                 .open();
+
 
             this.airplanePopoverContent.getCachedElement("ff42bb72").text(`${Number.parseFloat(data.get("velocity").numberValue()*2.236936).toPrecision(4)} mph`);
             this.airplanePopoverContent.getCachedElement("01d5a4da").text(`${data.get("verticalRate").numberValue()}m/s`);
