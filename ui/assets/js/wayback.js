@@ -296,6 +296,7 @@ class Wayback {
             console.info('stop');
             // this.apiNodeRef.command('queryApi', false);
             this.disableApiQuery();
+            
         } else {
             console.info('start');
             this.enableApiQuery();
