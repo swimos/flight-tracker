@@ -211,7 +211,7 @@ class Wayback {
                 this.apiNodeRef.command('readCsv', true);
                 break;
             default:
-                const csv = this.appConfig.csvFiles[csvKey];
+                const csv = this.csvFiles[csvKey];
                 swim.command(this.simUrl, this.csv.laneUri, "readCsv", true);
         }
     }
@@ -223,13 +223,13 @@ class Wayback {
                 this.apiNodeRef.command('writeCsv', true);
                 break;
             default:
-                const csv = this.appConfig.csvFiles[csvKey];
+                const csv = this.csvFiles[csvKey];
                 swim.command(this.simUrl, this.csv.laneUri, "writeCsv", true);
         }
     }
 
     purgeAirplaneData(csvKey) {
-        const csv = this.appConfig.csvFiles[csvKey];
+        const csv = this.csvFiles[csvKey].toObject();
         console.info("purge: " + csvKey);
         swim.command(this.simUrl, csv.laneUri, "purgeData", true);
     }

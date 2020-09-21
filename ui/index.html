@@ -59,39 +59,51 @@
   <body class="page" onload="start()">
 
     <!-- header -->
-    <header class="main-header container-fluid">
-      <div class="row">
-        <div class="col col-8 content-left">
-          <picture><img src="https://cdn.swim.ai/images/logos/swim-marlin-logo-white.svg" alt="Swim.ai Logo" height="58"></picture>
-          <div class="main-title">
-            <h1 id="mainTitle">Flight Tracker</h1>
-          </div>
-          <div class="menu">
-            <select id="regionDropDown">
-              <option value="chicago">Chicago O'Hare Airport</option>
-              <option value="sfbay">San Francisco Bay Area</option>
-              <option value="socal">Southern California</option>
-              <option value="seaboard">North East Seaboard, US</option>
-              <option value="dfw">Dallas/Fort Worth</option>
-              <option value="phoenix">Phoenix Sky Harbor</option>
-              <option value="seattle">Seattle/Vancouver</option>
-              <option value="persian">Persian Gulf</option>
-              <option value="europe">Europe</option>
-              <option value="zurich">Zürich Airport</option>
-              <option value="world">Worldwide</option>
-            </select>
-          </div>          
+    <header class="main-header">
+      <div class="prism-line"></div>
+      <div class="content-left">
+        <a href="http://swim.ai" target="_blank">
+          <img src="https://cdn.swim.ai/images/logos/marlin/swim-marlin-logo.svg" style="pointer-events: visibleFill;">
+        </a>
+        <div class="heading">
+          <div class="title">Flight Tracker</div>
+          <div class="subtitle"></div>
         </div>
-        <div class="col col-4 text-right content-right">
-          <a href="http://swim.ai" target="_top">
-            <picture class="d-none d-sm-inline">
-              <img src="http://cdn.swim.ai/images/powerBySWIM-AI-top-default.svg" height="33px" alt="Power by SWIM.ai Logo">
-            </picture>
-          </a>
+        <div class="form-select">
+          <select id="regionDropDown">
+            <option value="chicago">Chicago O'Hare Airport</option>
+            <option value="sfbay">San Francisco Bay Area</option>
+            <option value="socal">Southern California</option>
+            <option value="seaboard">North East Seaboard, US</option>
+            <option value="dfw">Dallas/Fort Worth</option>
+            <option value="phoenix">Phoenix Sky Harbor</option>
+            <option value="seattle">Seattle/Vancouver</option>
+            <option value="persian">Persian Gulf</option>
+            <option value="europe">Europe</option>
+            <option value="zurich">Zürich Airport</option>
+            <option value="world">Worldwide</option>
+          </select>
         </div>
       </div>
     </header>
     <!-- /header -->
+
+
+    <!-- <select id="regionDropDown">
+      <option value="chicago">Chicago O'Hare Airport</option>
+      <option value="sfbay">San Francisco Bay Area</option>
+      <option value="socal">Southern California</option>
+      <option value="seaboard">North East Seaboard, US</option>
+      <option value="dfw">Dallas/Fort Worth</option>
+      <option value="phoenix">Phoenix Sky Harbor</option>
+      <option value="seattle">Seattle/Vancouver</option>
+      <option value="persian">Persian Gulf</option>
+      <option value="europe">Europe</option>
+      <option value="zurich">Zürich Airport</option>
+      <option value="world">Worldwide</option>
+    </select>
+     -->
+    
 
     <!-- main -->
     <main class="main" style="height: 100%; width: 100%">

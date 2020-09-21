@@ -96,60 +96,83 @@
   top: 0px;
 }
 
-.main-header {
-  position: relative;
-  z-index: 10;
-  height: 64px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
-  color: #fff;
+
+.main {   
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   width: 100%;
-  background-color: black;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+}
+
+.main-header {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  font-family: "Open Sans", sans-serif;
-  overflow: hidden;  
+  justify-content: space-between;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1em;
+  pointer-events: none;
 }
-.main-header .main-title {
-  display: flex;
+
+.main-header .heading {
+  margin: 8px 0 0 .5em;
 }
-.main-header .row {
-  height: 100%;
-  flex-grow: 1;
-}
-.main-header .content-left,
-.main-header .content-right {
-  display: flex;
-}
-.main-header .content-left a,
-.main-header .content-left picture,
-.main-header .content-right a,
-.main-header .content-right picture {
-  display: flex;
-  height: 100%;
-  align-items: center;
-}
-.main-header .btn-plant-back {
-  margin-right: 10px;
-}
-.main-header .content-right {
-  margin-top: 15px;
-  margin-bottom: 12px;
-  justify-content: flex-end;
-  align-items: flex-end;
-}
-.main-header .content-right picture {
-  padding-left: 15px;
-}
-.main-header h1 {
-  align-self: center;
-  font-size: 20px;
-  margin: 0 25px 0 15px;
+
+.main-header .heading .title {
+  font-size: 1.5rem;
   font-weight: normal;
-  letter-spacing: 1px;
-  line-height: 62px;
-  height: 100%;
+  margin-bottom: 0;
 }
+
+.main-header .heading .subtitle {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-top: -5px;
+}
+
+.main-header .form-select {
+  margin: .1em 0 0 1em;  
+}
+
+.main-header .content-left {
+  display: flex;
+  align-items: center;
+}
+
+.main-header .form-select select {
+  background: transparent;
+  border: 0;
+  font-size: 0.9375rem;
+  color: #fff;
+  padding: 0;
+  margin: 0 0 0 5px;
+  outline: none;
+  border-bottom: 2px solid #44d7b6;
+  pointer-events: all;
+}
+
+.main-header .form-select select option {
+  color: black;
+}
+
+.prism-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #44d7b6;
+}
+
+
 .main-header .timer {
   align-self: flex-end;
   font-size: 13px;
@@ -213,7 +236,7 @@
 
 .sideMenu, .sideMenuOpen {
   position: absolute;
-  top: 74px;
+  top: 120px;
   left: 0px;
   width: 40px;
   height: calc(70% - 74px);
@@ -299,8 +322,8 @@
 
 .timestampContainer {
   position: absolute;
-  top: 10px;
-  left: 50px;
+  top: 20px;
+  right: 20px;
   font-size: 18px;
   font-weight: 100;
   height: 50px;
@@ -415,10 +438,11 @@
 }
 
 .pieHeader {
-  position: absolute;
   padding: 5px;
+  margin: 0px;
   font-size: 18px;
-  background-color: rgba(100,100,200,0.7);
+  background-color: rgba(68, 215, 182, 0.75);
+  color: black;
   width: 50%;
   text-align: left;
 }
@@ -450,4 +474,31 @@
   background-color: #404040;
   color: white;
   border: 0px;
+}
+
+.gaugePanel {
+  position: absolute;
+  right: 0px;
+  bottom: 60px;
+  width: 600px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 5px;
+  pointer-events: none;
+}
+
+.gaugeContainer {
+  background-color: rgba(0,0,0,0.1);
+  backdrop-filter: blur(2px) saturate(30%);
+  height: 200px;
+  border-radius: 15px;
+  
+
+}
+
+.gaugeCanvas {
+}
+
+.gaugeHeader {
+  display: flex;
 }

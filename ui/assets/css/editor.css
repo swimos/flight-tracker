@@ -20,7 +20,7 @@ body,
   bottom: 0px;
 }
 
-.main-header {
+.main-header-editor {
   position: relative;
   z-index: 10;
   height: 64px;
@@ -33,46 +33,47 @@ body,
   align-items: center;
   font-family: "Open Sans", sans-serif;
   overflow: hidden;  
+  padding: 0px !important;
 }
-.main-header .main-title {
+.main-header-editor .main-title {
   display: flex;
 }
-.main-header .row {
+.main-header-editor .row {
   height: 100%;
   flex-grow: 1;
 }
-.main-header .content-left,
-.main-header .content-right {
+.main-header-editor .content-left,
+.main-header-editor .content-right {
   display: flex;
 }
-.main-header .content-left a,
-.main-header .content-left picture,
-.main-header .content-right a,
-.main-header .content-right picture {
+.main-header-editor .content-left a,
+.main-header-editor .content-left picture,
+.main-header-editor .content-right a,
+.main-header-editor .content-right picture {
   display: flex;
   height: 100%;
   align-items: center;
 }
-.main-header .btn-plant-back {
+.main-header-editor .btn-plant-back {
   margin-right: 10px;
 }
-.main-header .content-right {
+.main-header-editor .content-right {
   margin-top: 15px;
   margin-bottom: 12px;
   justify-content: flex-end;
   align-items: flex-end;
 }
-.main-header .content-right picture {
+.main-header-editor .content-right picture {
   padding-left: 15px;
 }
-.main-header h1 {
+.main-header-editor h1 {
   align-self: center;
   font-size: 20px;
   margin: 0 0 0 15px;
   font-weight: normal;
   letter-spacing: 1px;
 }
-.main-header .timer {
+.main-header-editor .timer {
   align-self: flex-end;
   font-size: 13px;
   line-height: 1.2;

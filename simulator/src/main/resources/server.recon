@@ -58,7 +58,8 @@ simulator: @fabric {
         apiUrl: "https://<api_username>:<api_password>@opensky-network.org/api",
         apiQueryParams: "/states/all?lamin=%1$s&lomin=%2$s&lamax=%3$s&lomax=%4$s",
         worldQueryParam: "/states/all",
-        laneUri: "/bridge/opensky"        
+        laneUri: "/bridge/opensky",
+        serverUrl: "ws://127.0.0.1:9001"     
       }
     }
   }    

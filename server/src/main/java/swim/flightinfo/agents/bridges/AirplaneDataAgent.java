@@ -98,7 +98,7 @@ public class AirplaneDataAgent extends AbstractAgent {
 
     // create record which will tell apiRequestAgent where to get data and where to put the result
     Record apiRequestInfo = Record.create()
-      .slot("targetHost", "warp://127.0.0.1:9001")
+      .slot("targetHost", "ws://127.0.0.1:9001")
       .slot("targetAgent", "/airport/" + airportId)
       .slot("targetLane", "updateArrivals")
       .slot("apiUrl", newUrlAlt);

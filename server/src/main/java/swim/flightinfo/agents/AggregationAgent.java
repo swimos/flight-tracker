@@ -36,6 +36,7 @@ public class AggregationAgent extends AbstractAgent {
   private TimerRef recountTimer;
   private Integer maxMedAirports = 3000;
   private Integer airportCount = 0;
+  private Value agentConfig;
 
   /**
    * Map Lane which holds a list of all the State Vectors that are currently
@@ -247,8 +248,7 @@ public class AggregationAgent extends AbstractAgent {
     .onCommand((Value removedState) -> {
       this.airplaneList.forEach((airplaneKey, airplaneValue) -> {
         String callsign = airplaneKey.stringValue("none");
-        command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("/airplanes/" + callsign), Uri.parse("removeAirplane"),
-            Value.absent());
+        command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/airplanes/" + callsign), Uri.parse("removeAirplane"), Value.absent());
 
       });
       this.airplaneDeltas.set(Record.create());
@@ -356,6 +356,7 @@ public class AggregationAgent extends AbstractAgent {
     if(ConfigEnv.AGGREGATE_HUB_NAME != null) {
       this.setEventHubTimer();
     }
+    this.agentConfig = getProp("config"); // grab config value for this agent from server.recon
     
     System.out.println("Aggregation Agent started");
   }
@@ -369,9 +370,9 @@ public class AggregationAgent extends AbstractAgent {
     this.largeAirportList.forEach((Value listKey, Value listValue) -> {
       if (showLargeAirports) {
         //this.filteredAirportList.put(listValue.get("id"), listValue);
-        command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("/userPrefs/" + userGuid), Uri.parse("addFilteredAirport"), listValue);
+        command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/userPrefs/" + userGuid), Uri.parse("addFilteredAirport"), listValue);
       } else {
-        command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("/userPrefs/" + userGuid), Uri.parse("removeFilteredAirport"), listValue);
+        command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/userPrefs/" + userGuid), Uri.parse("removeFilteredAirport"), listValue);
         // this.filteredAirportList.remove(listValue.get("id"));
       }
     });
@@ -379,12 +380,12 @@ public class AggregationAgent extends AbstractAgent {
     this.mediumAirportList.forEach((Value listKey, Value listValue) -> {
       if (showMediumAirports) {
         if(airportCount <= maxMedAirports) {
-          command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("/userPrefs/" + userGuid), Uri.parse("addFilteredAirport"), listValue);
+          command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/userPrefs/" + userGuid), Uri.parse("addFilteredAirport"), listValue);
           // this.filteredAirportList.put(listValue.get("id"), listValue);
           airportCount++;
         }
       } else {
-        command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("/userPrefs/" + userGuid), Uri.parse("removeFilteredAirport"), listValue);
+        command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/userPrefs/" + userGuid), Uri.parse("removeFilteredAirport"), listValue);
         // this.filteredAirportList.remove(listValue.get("id"));
       }
     });

@@ -250,8 +250,8 @@ public class OpenSkyAgent extends DataImportAgent {
       .onCommand((Value newValue) -> {
         command(Uri.parse("/simulator"), Uri.parse("addJavaLog"), Value.fromObject("OpenSky Agent: send vector to app"));
         // System.out.println(this.stateVectors.get(newValue.longValue()));
-        command(Uri.parse("ws://127.0.0.1:9001"), Uri.parse("/bridge/airplaneData"), Uri.parse("receiveVectorRecord"), this.stateVectors.get(newValue.longValue()));
-        command(Uri.parse("ws://127.0.0.1:9001"), Uri.parse("/aggregation"), Uri.parse("setSimTime"), newValue);
+        command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/bridge/airplaneData"), Uri.parse("receiveVectorRecord"), this.stateVectors.get(newValue.longValue()));
+        command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("/aggregation"), Uri.parse("setSimTime"), newValue);
       }); 
   
 

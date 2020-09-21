@@ -28,6 +28,7 @@ public class AirplaneAgent extends AbstractAgent {
   private TimerRef purgeTimer;
   private TimerRef eventHubTimer;
   private Boolean isActive = false;
+  private Value agentConfig;
 
   /**
     Value Lane which holds the callsign string of the staet vector
@@ -115,7 +116,7 @@ public class AirplaneAgent extends AbstractAgent {
             .slot("verticalRate", stateData.get("verticalRate"));
           
           // update Aggregation WebAgent with current data
-          command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("aggregation"), Uri.parse("addAirplane"), tempRecord); 
+          command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("aggregation"), Uri.parse("addAirplane"), tempRecord); 
 
         }
         
@@ -126,7 +127,12 @@ public class AirplaneAgent extends AbstractAgent {
   @SwimLane("removeAirplane")
   public CommandLane<Value> removeAirplane = this.<Value>commandLane()
     .onCommand((Value value) -> {
-      this.stopAgent();
+      try {
+        this.stopAgent();
+      } catch(Exception ex) {
+        System.out.println("error removing airplane");
+      }
+      
     });
 
   /**
@@ -139,6 +145,7 @@ public class AirplaneAgent extends AbstractAgent {
     if(ConfigEnv.AIRPLANE_HUB_NAME != null) {
       this.setEventHubTimer();
     }    
+    this.agentConfig = getProp("config"); // grab config value for this agent from server.recon
   }
 
   /**
@@ -179,21 +186,27 @@ public class AirplaneAgent extends AbstractAgent {
       eventHubTimer.cancel();
     }
     this.clearTracks();
-    command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("aggregation"), Uri.parse("removeAirplane"), Value.fromObject(this.callsign.get())); 
+    command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("aggregation"), Uri.parse("removeAirplane"), Value.fromObject(this.callsign.get())); 
     
     close();
 
   }
 
   private void clearTracks() {
-    Cursor<Long> recordCursor = this.tracks.keyIterator();
     this.latitude.set(Value.absent());
     this.longitude.set(Value.absent());
     this.fullState.set(Value.absent());
     this.onGround.set(Value.absent());
-    while (recordCursor.hasNext()) {
-      Long currKey = recordCursor.next();
+    this.bearingTotal.set(0f);
+    Cursor<Long> trackRecordCursor = this.tracks.keyIterator();
+    while (trackRecordCursor.hasNext()) {
+      Long currKey = trackRecordCursor.next();
       this.tracks.remove(currKey);
+    }        
+    Cursor<Long> bearingRecordCursor = this.bearingHistory.keyIterator();
+    while (bearingRecordCursor.hasNext()) {
+      Long currKey = bearingRecordCursor.next();
+      this.bearingHistory.remove(currKey);
     }        
 
   }
@@ -228,6 +241,7 @@ public class AirplaneAgent extends AbstractAgent {
     }       
     
     this.bearingTotal.set(deltaTotal);
+
   }
 
   private void setEventHubTimer() {

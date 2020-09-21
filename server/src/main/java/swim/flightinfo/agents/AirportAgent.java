@@ -9,6 +9,8 @@ import swim.uri.Uri;
 
 public class AirportAgent extends AbstractAgent {
 
+  private Value agentConfig;
+
   @SwimLane("id")
   protected ValueLane<Value> airportId;
 
@@ -62,9 +64,9 @@ public class AirportAgent extends AbstractAgent {
 
     // update Aggregation WebAgent with current data
     if(type == "large") {
-      command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("aggregation"), Uri.parse("addLargeAirport"), stateData); 
+      command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("aggregation"), Uri.parse("addLargeAirport"), stateData); 
     } else if(type == "medium") {
-      command(Uri.parse("warp://127.0.0.1:9001"), Uri.parse("aggregation"), Uri.parse("addMediumAirport"), stateData); 
+      command(Uri.parse(this.agentConfig.get("serverUrl").stringValue()), Uri.parse("aggregation"), Uri.parse("addMediumAirport"), stateData); 
     }
   }
   /**
@@ -72,7 +74,7 @@ public class AirportAgent extends AbstractAgent {
    */
   @Override
   public void didStart() {
-
+    this.agentConfig = getProp("config"); // grab config value for this agent from server.recon
   }
 
 }
