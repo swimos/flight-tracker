@@ -18,11 +18,11 @@ cd ../simulator/
 cd ../
 
 printf "\nPrepare App Server Dist folder\n"
-tar -xf ./server/build/distributions/swim-flightInfo-3.11.0-SNAPSHOT.tar -C ./server/dist/
-rm server/dist/swim-flightInfo-3.11.0-SNAPSHOT/lib/jffi-1.2.17-native.jar
+tar -xf ./server/build/distributions/swim-flightInfo-3.10.2.tar -C ./server/dist/
+rm server/dist/swim-flightInfo-3.10.2/lib/jffi-1.2.17-native.jar
 
 printf "\nPrepare Simulator Dist folder\n"
-tar -xf ./simulator/build/distributions/swim-simulator-3.11.0-SNAPSHOT.tar -C ./simulator/dist/
-rm simulator/dist/swim-simulator-3.11.0-SNAPSHOT/lib/jffi-1.2.17-native.jar
+tar -xf ./simulator/build/distributions/swim-simulator-3.10.2.tar -C ./simulator/dist/
+rm simulator/dist/swim-simulator-3.10.2/lib/jffi-1.2.17-native.jar
 
 printf "\ndone.\n"
