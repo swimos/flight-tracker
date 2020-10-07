@@ -66,7 +66,7 @@ public class OpenSkyAgent extends DataImportAgent {
   private TimerRef refreshTimer;
   
   private final int HISTORY_SIZE = 500;
-  private final int MAX_STATE_VECTORS_SIZE = 2160; // 3 hours of data at 5 second interval
+  private final int MAX_STATE_VECTORS_SIZE = 720; // 1 hour of data at 5 second interval
 
   @SwimLane("rawData")
   ValueLane<Value> rawData = this.<Value>valueLane();

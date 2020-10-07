@@ -52,7 +52,7 @@ simulator: @fabric {
         writeToCsv: false,
         preloadFromCsv: false,
         queryBounds: 1.0,
-        apiQueryAutoStart: false,
+        apiQueryAutoStart: true,
         apiQueryInterval: 5500,
         queryWorld: true,
         apiUrl: "https://<api_username>:<api_password>@opensky-network.org/api",

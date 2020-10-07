@@ -97,8 +97,8 @@ afterEvaluate {
       classpath = files()
       defaultJvmOpts = [
         '-Dswim.config=/server.recon',
-        '-Xms3g',
-        '-Xmx3g',
+        '-Xms4g',
+        '-Xmx4g',
         '--module-path', 'APP_HOME_LIBS',
         '--module', "${moduleName}/${mainClassName}"
       ]

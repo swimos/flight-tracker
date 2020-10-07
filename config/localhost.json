@@ -1,6 +1,6 @@
 {
     "appName": "Flight Tracker",
-    "autoStartSim": false,
+    "autoStartSim": true,
     "csvInFolder": "../rawData/in/",
     "csvOutFolder": " ../rawData/out/",
     "simLoopInterval": 5500,
